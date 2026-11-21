@@ -1,23 +1,38 @@
 @extends('layout.admin_home')
 
 @section('container')
-<div class="container py-5">
+<style>
+    .admin-data-page { background: #f8fafc; min-height: 100vh; }
+    .dashboard-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,.05); padding: 2rem; height: 100%; }
+    .card-header { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.5rem; }
+    .card-icon { width: 40px; height: 40px; flex: 0 0 40px; display: flex; align-items: center; justify-content: center; background: #e0f2fe; color: #0284c7; border-radius: 10px; font-size: 1.25rem; }
+    .dashboard-card .card-title { color: #1e293b; font-size: 1.25rem; font-weight: 600; margin: 0; }
+    .admin-data-page .form-label { color: #475569; }
+    .admin-data-page .form-control, .admin-data-page .form-select { border: 1px solid #e2e8f0; border-radius: 8px; }
+    .admin-data-page .form-control:focus, .admin-data-page .form-select:focus { border-color: #0284c7; box-shadow: 0 0 0 3px rgba(2,132,199,.1); }
+    .admin-data-page table thead th { background: #f8fafc; color: #475569; font-weight: 600; border-bottom: 2px solid #e2e8f0; }
+    @media (max-width: 768px) { .dashboard-card { padding: 1.25rem; } }
+</style>
+<div class="container py-5 admin-data-page">
     <!-- Header Section -->
     <div class="mb-4">
-        <h1 class="fw-bold text-dark mb-1">Machine Management</h1>
-        <p class="text-muted mb-0">Register and manage production machines</p>
+        <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+            <div>
+                <h1 class="fw-bold text-dark mb-1">Machine Management</h1>
+                <p class="text-muted mb-0">Register and manage production machines</p>
+            </div>
+        </div>
     </div>
 
     <div class="row g-4">
         <!-- Form Section -->
-        <div class="col-md-5">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="card-title fw-bold mb-0">Add New Machine</h5>
-                    </div>
-
-                    <form id="machineForm">
+        <div class="col-12">
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="bi bi-gear-wide-connected"></i></div>
+                    <h5 class="card-title">Add New Machine</h5>
+                </div>
+                <form id="machineForm">
                         @csrf
                         <input type="hidden" id="itemId">
 
@@ -79,20 +94,23 @@
 
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-save me-2"></i>Register Machine
+                                <i class="fas fa-save me-2"></i>Create
                             </button>
                         </div>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
 
         <!-- Table Section -->
-        <div class="col-md-7">
-            <div class="card border-0 shadow-sm">
+        <div class="col-12">
+            <div class="dashboard-card p-0">
+                <div class="card-header px-4 pt-4">
+                    <div class="card-icon"><i class="bi bi-list-ul"></i></div>
+                    <h5 class="card-title">Machine List</h5>
+                </div>
                 <div class="card-body p-0">
                     <table id="machinesTable" class="table table-hover mb-0">
-                        <thead class="bg-light">
+                        <thead>
                             <tr>
                                 <th class="px-4 py-3">Machine</th>
                                 <th class="px-4 py-3">Specifications</th>

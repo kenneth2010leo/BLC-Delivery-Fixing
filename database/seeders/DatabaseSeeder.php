@@ -28,6 +28,12 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('12345')
         ]);
 
+        Administrator::create([
+            'admin_username' => 'michelle',
+            'super_admin' => '0',
+            'password' => bcrypt('admin999')
+        ]);
+
         // Player::create([
         //     'player_username' => 'samuelado',
         //     'password' => bcrypt('12345'),

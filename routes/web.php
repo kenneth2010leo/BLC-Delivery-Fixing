@@ -32,7 +32,7 @@ Route::get('/', function(){
 });
 
 
-// Login, Logout, Regist Player
+// Login, Logout, Regist Playerr
 Route::get('/loginPlayer', [LoginPlayerController::class,'index']);
 Route::post('/loginPlayer', [LoginPlayerController::class,'authenticate']);
 Route::get('/registPlayer', [RegistPlayerController::class,'index']);
@@ -48,7 +48,7 @@ Route::post('/registAdmin', [RegistAdminController::class,'store']);
 Route::get('/logoutAdmin',[LoginAdminController::class,'logout']);
 
 // Home Admin
-Route::get('/homeAdmin',[AdminHomeController::class,'index'])->middleware('auth.administrator');
+Route::get('/manageRoom',[AdminHomeController::class,'index'])->middleware('auth.administrator');
 Route::get('/manageData',[ManageDataController::class, 'index'])->middleware('auth.administrator');
 Route::get('/manageAccount',[RegistPlayerController::class,'index'])->middleware('auth.administrator');
 Route::get('/manageAdmin',[RegistAdminController::class,'index'])->middleware('auth.administrator');

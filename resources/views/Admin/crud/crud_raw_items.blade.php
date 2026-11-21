@@ -1,28 +1,57 @@
 @extends('layout.admin_home')
 
 @section('container')
-<div class="container py-5">
+<div class="container py-5 admin-data-page">
     <!-- Header Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h1 class="fw-bold text-dark mb-1">Raw Items</h1>
             <p class="text-muted mb-0">Manage your raw materials inventory</p>
         </div>
-        <button class="btn btn-primary px-4 d-flex align-items-center" id="addNewRawItem">
-            <i class="fas fa-plus-circle me-2"></i>
-            Add New Item
-        </button>
+    </div>
+
+    <!-- Create Card -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <div class="card-icon"><i class="bi bi-plus-circle"></i></div>
+            <h5 class="card-title">Create New Raw Item</h5>
+        </div>
+        <form id="rawItemCreateForm">
+            @csrf
+            <div class="row g-3 align-items-end">
+                <div class="col-md-6">
+                    <label for="rawItemCreateName" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="rawItemCreateName" name="raw_item_name" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="rawItemCreatePrice" class="form-label">Price per pcs</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light">Rp</span>
+                        <input type="number" class="form-control" id="rawItemCreatePrice" name="raw_item_price" required min="0">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 d-grid mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-save me-2"></i>Create
+                </button>
+            </div>
+        </form>
     </div>
 
     <!-- Table Card -->
-    <div class="card border-0 shadow-sm">
+    <div class="dashboard-card p-0">
+        <div class="card-header px-4 pt-4">
+            <div class="card-icon"><i class="bi bi-box-seam"></i></div>
+            <h5 class="card-title">Raw Items List</h5>
+        </div>
         <div class="card-body p-0">
             <table id="rawItemsTable" class="table table-hover mb-0">
-                <thead class="bg-light">
+                <thead>
                     <tr>
                         <th class="px-4 py-3">ID</th>
                         <th class="px-4 py-3">Name</th>
-                        <th class="px-4 py-3">Price</th>
+                        <th class="px-4 py-3">Price per pcs</th>
                         <th class="px-4 py-3 text-end">Actions</th>
                     </tr>
                 </thead>
@@ -49,7 +78,7 @@
                         <input type="text" class="form-control form-control-lg" id="rawItemName" name="raw_item_name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="rawItemPrice" class="form-label text-dark fw-medium">Price</label>
+                        <label for="rawItemPrice" class="form-label text-dark fw-medium">Price per pcs</label>
                         <div class="input-group input-group-lg">
                             <span class="input-group-text bg-light">Rp </span>
                             <input type="number" class="form-control" id="rawItemPrice" name="raw_item_price" required>
@@ -67,6 +96,18 @@
 
 <!-- Styles -->
 <style>
+/* Match the Admin Management cards and form controls. */
+.admin-data-page { background: #f8fafc; min-height: 100vh; }
+.dashboard-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,.05); padding: 2rem; margin-bottom: 2rem; overflow: hidden; }
+.card-header { display: flex; align-items: center; gap: .75rem; margin: 0 1.5rem 1rem; }
+.card-icon { width: 40px; height: 40px; flex: 0 0 40px; display: flex; align-items: center; justify-content: center; background: #e0f2fe; color: #0284c7; border-radius: 10px; font-size: 1.25rem; }
+.card-title { color: #1e293b; font-size: 1.25rem; font-weight: 600; margin: 0; }
+.admin-data-page .form-label { color: #475569; font-weight: 500; }
+.admin-data-page .form-control { border: 1px solid #e2e8f0; border-radius: 8px; }
+.admin-data-page .form-control:focus { border-color: #0284c7; box-shadow: 0 0 0 3px rgba(2,132,199,.1); }
+.admin-data-page table thead th { background: #f8fafc; color: #475569; font-weight: 600; border-bottom: 2px solid #e2e8f0; }
+.admin-data-page .table > :not(caption) > * > * { padding: 1rem 1.5rem; vertical-align: middle; }
+@media (max-width: 768px) { .dashboard-card { padding: 1.25rem; } }
 /* Custom styles for better contrast and visual hierarchy */
 .table > :not(caption) > * > * {
     padding: 1rem 1.5rem;
@@ -183,12 +224,22 @@ $(document).ready(function() {
         }
     });
 
-    // Add New Raw Item
-    $('#addNewRawItem').on('click', function() {
-        $('#rawItemModal').modal('show');
-        $('#rawItemModalLabel').text('Add New Raw Item');
-        $('#rawItemForm').trigger('reset');
-        $('#rawItemId').val('');
+    // Create Raw Item
+    $('#rawItemCreateForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/blc-delivery/raw-items/',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#rawItemCreateForm').trigger('reset');
+                table.ajax.reload();
+                Swal.fire({ icon: 'success', title: 'Success!', text: response.message, timer: 2000, showConfirmButton: false });
+            },
+            error: function(xhr) {
+                Swal.fire({ icon: 'error', title: 'Error!', text: xhr.responseJSON.message || 'Something went wrong!' });
+            }
+        });
     });
 
     // Edit Raw Item

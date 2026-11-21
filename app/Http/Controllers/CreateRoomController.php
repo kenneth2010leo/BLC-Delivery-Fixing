@@ -27,9 +27,10 @@ use Illuminate\Http\Request;
 
 class CreateRoomController extends Controller
 {
+    
     public function createRoom(Request $request)
     {
-        // dd($request->all());
+         //dd($request->all());
         // dd($request->input('mks.kota'));
         // dd($request->input("mnd[LCL_price]"));
         $validatedData = $request->validate([

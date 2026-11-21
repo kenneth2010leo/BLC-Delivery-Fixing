@@ -44,7 +44,7 @@
             </a>
         </li>
         <li class="sidebar-item">
-            <a href="/blc-delivery/homeAdmin" class="sidebar-link">
+            <a href="/blc-delivery/manageRoom" class="sidebar-link">
                 <i class="lni lni-agenda"></i>
                 <span>Manage Room</span>
             </a>

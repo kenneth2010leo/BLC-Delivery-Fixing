@@ -259,15 +259,16 @@ Lobby {{ $room->room_id }}
                     orderable: false,
                     searchable: false,
                     render: (data) => {
+                        const token = $('meta[name="csrf-token"]').attr('content'); // ← ambil dari meta
                         return `
-                <div class="text-end">
-                    <form action='/blc-delivery/kick-player' method='POST' class='form-delete'>
-                        @csrf
-                        <button type="submit" class="btn kick-btn" data-username="${data}">
-                            <i class="bi bi-x-circle"></i>
-                        </button>
-                    </form>
-                </div>`;
+                            <div class="text-end">
+                                <form action='/blc-delivery/lobby/kick-player' method='POST' class='form-delete'>
+                                    <input type="hidden" name="_token" value="${token}">
+                                    <button type="submit" class="btn kick-btn" data-username="${data}">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </form>
+                            </div>`;
                     },
                 },
             ],
@@ -281,14 +282,27 @@ Lobby {{ $room->room_id }}
 
 
         // Listen for player join event and reload table
-        window.Echo.channel('join-room')
-            .listen('.JoinRoomEvent', (event) => {
-                var roomIdEvent = event.roomId;
-                if (roomId == roomIdEvent) {
-                    datatable.ajax.reload();
-                    toastr.success('Player Joined');
-                }
-            });
+        // window.Echo.channel('join-room')
+        //     .listen('.JoinRoomEvent', (event) => {
+        //         var roomIdEvent = event.roomId;
+        //         if (roomId == roomIdEvent) {
+        //             datatable.ajax.reload();
+        //             toastr.success('Player Joined');
+        //         }
+        //     });
+
+        try {
+    window.Echo.channel('join-room')
+        .listen('.JoinRoomEvent', (event) => {
+            var roomIdEvent = event.roomId;
+            if (roomId == roomIdEvent) {
+                datatable.ajax.reload();
+                toastr.success('Player Joined');
+            }
+        });
+} catch (e) {
+    console.warn('Echo not available:', e);
+}
 
         // Handle player kick
         $('#player-datatable').on('submit', '.form-delete', function(e) {

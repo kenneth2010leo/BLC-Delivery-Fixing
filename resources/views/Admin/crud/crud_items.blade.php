@@ -4,6 +4,16 @@
 
 <!-- Styles -->
 <style>
+    .admin-data-page { background: #f8fafc; min-height: 100vh; }
+    .dashboard-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,.05); padding: 2rem; height: 100%; }
+    .card-header { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.5rem; }
+    .card-icon { width: 40px; height: 40px; flex: 0 0 40px; display: flex; align-items: center; justify-content: center; background: #e0f2fe; color: #0284c7; border-radius: 10px; font-size: 1.25rem; }
+    .dashboard-card .card-title { color: #1e293b; font-size: 1.25rem; font-weight: 600; margin: 0; }
+    .admin-data-page .form-label { color: #475569; }
+    .admin-data-page .form-control, .admin-data-page .form-select { border: 1px solid #e2e8f0; border-radius: 8px; }
+    .admin-data-page .form-control:focus, .admin-data-page .form-select:focus { border-color: #0284c7; box-shadow: 0 0 0 3px rgba(2,132,199,.1); }
+    .admin-data-page table thead th { background: #f8fafc; color: #475569; font-weight: 600; border-bottom: 2px solid #e2e8f0; }
+    @media (max-width: 768px) { .dashboard-card { padding: 1.25rem; } }
     .btn-action {
         width: 36px;
         height: 36px;
@@ -122,19 +132,25 @@
         color: white;
     }
 </style>
-<div class="container py-5">
+<div class="container py-5 admin-data-page">
     <!-- Header Section -->
     <div class="mb-4">
-        <h1 class="fw-bold text-dark mb-1">Item Management</h1>
-        <p class="text-muted mb-0">Create and manage finished products with their bill of materials</p>
+        <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+            <div>
+                <h1 class="fw-bold text-dark mb-1">Item Management</h1>
+                <p class="text-muted mb-0">Create and manage finished products with their bill of materials</p>
+            </div>
+        </div>
     </div>
 
     <div class="row g-4">
         <!-- Form Section -->
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body p-4">
-                    <h5 class="card-title fw-bold mb-4">Create New Item</h5>
+        <div class="col-12">
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="bi bi-box-seam"></i></div>
+                    <h5 class="card-title">Create New Item</h5>
+                </div>
                     <form id="itemForm">
                         @csrf
                         <input type="hidden" id="itemId">
@@ -150,7 +166,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <label class="form-label fw-medium mb-0">Bill of Materials</label>
                                 <button type="button" class="btn btn-primary btn-sm" id="addMoreFields">
-                                    <i class="fas fa-plus"></i> Add Material
+                                    <i class="bi bi-plus-circle"></i> Add Material
                                 </button>
                             </div>
                             <div id="dynamicFields" class="border rounded-3 p-3 bg-light">
@@ -173,25 +189,20 @@
                             </div>
                         </div>
 
-                        <!-- Dimensions Section -->
-                        <div class="mb-4">
-                            <label class="form-label fw-medium mb-3">Item Dimensions</label>
-                            <div class="row g-3">
-                                <div class="col-md-4">
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-medium mb-3">Item Dimensions</label>
+                                <div class="d-grid gap-3">
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="item_length"
                                             name="item_length" required min="0" step="0.01" placeholder="Length">
                                         <span class="input-group-text bg-light">m</span>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="item_width"
                                             name="item_width" required min="0" step="0.01" placeholder="Width">
                                         <span class="input-group-text bg-light">m</span>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="item_height"
                                             name="item_height" required min="0" step="0.01" placeholder="Height">
@@ -199,25 +210,23 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Weight Section -->
-                        <div class="mb-4">
-                            <label for="itemWeight" class="form-label fw-medium">Item Weight</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="itemWeight"
-                                    name="item_weight" required min="0" step="0.01">
-                                <span class="input-group-text bg-light">ton</span>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="itemPrice" class="form-label fw-medium">Item Price</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light">Rp</span>
-
-                                <input type="number" class="form-control" id="itemPrice"
-                                    name="item_price" required min="0" step="0.01">
+                            <div class="col-md-6 d-grid gap-3 align-content-center">
+                                <div>
+                                    <label for="itemWeight" class="form-label fw-medium">Item Weight</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="itemWeight"
+                                            name="item_weight" required min="0" step="0.01">
+                                        <span class="input-group-text bg-light">ton</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="itemPrice" class="form-label fw-medium">Item Price</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light">Rp</span>
+                                        <input type="number" class="form-control" id="itemPrice"
+                                            name="item_price" required min="0" step="0.01">
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -227,16 +236,19 @@
                             </button>
                         </div>
                     </form>
-                </div>
             </div>
         </div>
 
         <!-- Table Section -->
-        <div class="col-md-8">
-            <div class="card border-0 shadow-sm">
+        <div class="col-12">
+            <div class="dashboard-card p-0">
+                <div class="card-header px-4 pt-4">
+                    <div class="card-icon"><i class="bi bi-boxes"></i></div>
+                    <h5 class="card-title">Items List</h5>
+                </div>
                 <div class="card-body p-0">
                     <table id="itemsTable" class="table table-hover mb-0">
-                        <thead class="bg-light">
+                        <thead>
                             <tr>
                                 <th class="px-4 py-3">Name</th>
                                 <th class="px-4 py-3">Bill Of Material</th>

@@ -67,7 +67,7 @@
         </li>
     </ul>
     <div class="sidebar-footer">
-        <a href="/blc-delivery/homeAdmin" class="sidebar-link">
+        <a href="/blc-delivery/manageRoom" class="sidebar-link">
             <i class="lni lni-exit"></i>
             <span>Exit Room</span>
         </a>

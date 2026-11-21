@@ -21,7 +21,7 @@ class LoginAdminController extends Controller
         if (Auth::guard('administrator')->attempt($creds)){
             $request->session()->regenerate();
 
-            return redirect()->intended('/blc-delivery/homeAdmin');  
+            return redirect()->intended('/blc-delivery/manageRoom');  
         }
 
         return back()->with('loginError', 'Login Failed');
