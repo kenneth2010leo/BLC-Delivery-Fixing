@@ -62,7 +62,7 @@ Route::get('raw-items/data', [RawItemController::class, 'getData'])->middleware(
 Route::post('raw-items', [RawItemController::class, 'store'])->middleware('auth.administrator');
 Route::get('raw-items/{id}/edit', [RawItemController::class, 'edit'])->middleware('auth.administrator');
 Route::put('raw-items/{id}', [RawItemController::class, 'update'])->middleware('auth.administrator');
-Route::get('raw-items/delete/{id}', [RawItemController::class, 'destroy'])->middleware('auth.administrator');
+Route::delete('raw-items/delete/{id}', [RawItemController::class, 'destroy'])->middleware('auth.administrator');
 
 
 // CRUD Items
@@ -98,7 +98,7 @@ Route::get('/lobby/{room_id}/settingBahanBaku', [SettingBahanBaku::class,'index'
 Route::get('/lobby/{room_id}/demandInformation', [DemandController::class,'demandDeliveredInformation'])->middleware('auth.administrator');
 Route::get('/lobby/{room_id}/playerScore', [PlayerScoreController::class,'index'])->middleware('auth.administrator');
 Route::get('/lobby/{room_id}/player_transaction', [RoomControllerAdmin::class,'playerTransaction'])->middleware('auth.administrator');
-Route::post('/setting_bahan_baku', [SettingBahanBaku::class,'setting']);
+Route::post('/setting_bahan_baku', [SettingBahanBaku::class,'setting'])->middleware('auth.administrator');
 
 Route::post('/setPinjaman', [SettingPinjamanController::class, 'settingPinjaman']);
 Route::get('/lobby/{room_id}/utilityRoom', [UtilityRoomController::class,'index'])->middleware('auth.administrator');
