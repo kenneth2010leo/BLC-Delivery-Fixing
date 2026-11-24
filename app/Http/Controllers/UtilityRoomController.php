@@ -254,11 +254,11 @@ class UtilityRoomController extends Controller
             $undeliveredDemandCharge = 0; // Akan mengurangi revenue peserta jika masih ada sisa demand di akhir permainan
 
             $machineChosen = json_decode($room->machine_chosen);
-            $playerQuantityMachine = json_decode($p->machine_capacity);
+            $playerQuantityMachine = json_decode($p->machine_capacity, true) ?? [];
 
             for ($i = 0; $i < count($machineChosen); $i++) {
                 $machinePrice = Machine::where('id', $machineChosen[$i])->first()->machine_price;
-                $evaluatedMachineValue = $evaluatedMachineValue + ($machinePrice * $playerQuantityMachine[$i] * 0.05);
+                $evaluatedMachineValue = $$machinePrice * ($playerQuantityMachine[$i] ?? 0) * 0.05;
             }
 
             $demand = Demand::where('player_username', $p->player_username)
