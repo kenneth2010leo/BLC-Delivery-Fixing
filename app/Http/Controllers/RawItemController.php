@@ -6,6 +6,7 @@ use App\Models\Items;
 use App\Models\RawItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class RawItemController extends Controller
 {
@@ -66,10 +67,17 @@ class RawItemController extends Controller
 
     public function store(Request $request)
     {
+        // trim nama
+        $request->merge(['raw_item_name' => trim($request->raw_item_name)]);
+
         // Validasi data yang diterima
         $request->validate([
-            'raw_item_name' => 'required|string|max:255',
-            'raw_item_price' => 'required|numeric',
+            //add unique
+            'raw_item_name' => 'required|string|max:255|unique:raw_items,raw_item_name',
+            'raw_item_price' => 'required|numeric|min:0|max:1000000',
+        ], [
+            //popup saat nama sama
+            'raw_item_name.unique' => 'sudah terdapat item dengan nama tersebut'
         ]);
 
         RawItem::create([
@@ -89,9 +97,21 @@ class RawItemController extends Controller
 
     public function update(Request $request, $id)
     {
+        //trim nama
+        $request->merge(['raw_item_name' => trim($request->raw_item_name)]);
+
         $request->validate([
-            'raw_item_name' => 'required|string|max:255',
-            'raw_item_price' => 'required|numeric',
+            'raw_item_name' => [
+                'required',
+                'string',
+                'max:255',
+                //unique dan ignore id agar tidak menganggap duplikat diri sendiri
+                Rule::unique('raw_items', 'raw_item_name')->ignore($id),
+            ],
+            'raw_item_price' => 'required|numeric|min:0|max:1000000',
+        ], [
+            //pop up saat nama sama
+            'raw_item-name.unique' => 'sudah terdapat item dengan nama tersebut'
         ]);
 
         Rawitem::where('id', $id)
