@@ -50,18 +50,15 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <input type="number" class="form-control"
-                                            id="machine_size" name="machine_size"
-                                            required min="0" step="0.01"
-                                            placeholder="Size">
+                                        <input type="number" class="form-control" id="machine_size" name="machine_size"
+                                            required min="0.1" step="0.01" placeholder="Size">
                                         <span class="input-group-text bg-light">m²</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <input type="number" class="form-control"
-                                            id="production_capacity" name="production_capacity"
-                                            required min="1"
+                                        <input type="number" class="form-control" id="production_capacity"
+                                            name="production_capacity" required min="1"
                                             placeholder="Production Capacity">
                                         <span class="input-group-text bg-light">units/hr</span>
                                     </div>
@@ -97,181 +94,219 @@
                                 <i class="fas fa-save me-2"></i>Create
                             </button>
                         </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Table Section -->
-        <div class="col-12">
-            <div class="dashboard-card p-0">
-                <div class="card-header px-4 pt-4">
-                    <div class="card-icon"><i class="bi bi-list-ul"></i></div>
-                    <h5 class="card-title">Machine List</h5>
+                    </form>
                 </div>
-                <div class="card-body p-0">
-                    <table id="machinesTable" class="table table-hover mb-0">
-                        <thead>
-                            <tr>
-                                <th class="px-4 py-3">Machine</th>
-                                <th class="px-4 py-3">Specifications</th>
-                                <th class="px-4 py-3">Price</th>
-                                <th class="px-4 py-3">Production Item</th>
-                                <th class="px-4 py-3">Action</th>
-                                <!-- <th class="px-4 py-3 text-end">Actions</th> -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($machines as $machine)
-                            <tr>
-                                <td class="px-4">
-                                    <div class="fw-medium">{{ $machine->machine_name }}</div>
-                                </td>
-                                <td class="px-4">
-                                    <div class="small text-muted mb-1">Size: {{ $machine->machine_size }} m²</div>
-                                    <div class="small text-muted">Capacity: {{ $machine->production_capacity }} units/hr</div>
-                                </td>
-                                <td class="px-4">
-                                    Rp {{ number_format($machine->machine_price) }}
-                                </td>
-                                <td class="px-4">
-                                    <span class="badge bg-light text-dark">
-                                        {{ $machine->item->item_name }}
-                                    </span>
-                                </td>
-                                <td class="px-4">
-                                    <button class="btn btn-action btn-delete delete-machine" data-id="{{ $machine->id }}}">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                                <!-- <td class="px-4 text-end">
-                                    <button class="btn btn-action btn-edit editMachine" data-id="{{ $machine->id }}">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-action btn-delete deleteMachine" data-id="{{ $machine->id }}">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td> -->
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+            </div>
+
+            <!-- Table Section -->
+            <div class="col-12">
+                <div class="dashboard-card p-0">
+                    <div class="card-header px-4 pt-4">
+                        <div class="card-icon"><i class="bi bi-list-ul"></i></div>
+                        <h5 class="card-title">Machine List</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <table id="machinesTable" class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-3">Machine</th>
+                                    <th class="px-4 py-3">Specifications</th>
+                                    <th class="px-4 py-3">Price</th>
+                                    <th class="px-4 py-3">Production Item</th>
+                                    <th class="px-4 py-3">Action</th>
+                                    <!-- <th class="px-4 py-3 text-end">Actions</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($machines as $machine)
+                                    <tr>
+                                        <td class="px-4">
+                                            <div class="fw-medium">{{ $machine->machine_name }}</div>
+                                        </td>
+                                        <td class="px-4">
+                                            <div class="small text-muted mb-1">Size: {{ $machine->machine_size }} m²</div>
+                                            <div class="small text-muted">Capacity: {{ $machine->production_capacity }}
+                                                units/hr</div>
+                                        </td>
+                                        <td class="px-4">
+                                            Rp {{ number_format($machine->machine_price) }}
+                                        </td>
+                                        <td class="px-4">
+                                            <span class="badge bg-light text-dark">
+                                                {{ $machine->item->item_name }}
+                                            </span>
+                                        </td>
+                                        <td class="px-4">
+                                            <button class="btn btn-action btn-delete delete-machine"
+                                                data-id="{{ $machine->id }}}">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                        <!-- <td class="px-4 text-end">
+                                        <button class="btn btn-action btn-edit editMachine" data-id="{{ $machine->id }}">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-action btn-delete deleteMachine" data-id="{{ $machine->id }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td> -->
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Styles -->
-<style>
-    .btn-action {
-        width: 36px;
-        height: 36px;
-        padding: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px;
-        margin-left: 0.5rem;
-        transition: all 0.2s;
-    }
+    <!-- Styles -->
+    <style>
+        .btn-action {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            margin-left: 0.5rem;
+            transition: all 0.2s;
+        }
 
-    .btn-edit {
-        background-color: #e3f2fd;
-        color: #1976d2;
-        border: none;
-    }
+        .btn-edit {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            border: none;
+        }
 
-    .btn-edit:hover {
-        background-color: #1976d2;
-        color: white;
-    }
+        .btn-edit:hover {
+            background-color: #1976d2;
+            color: white;
+        }
 
-    .btn-delete {
-        background-color: #ffebee;
-        color: #d32f2f;
-        border: none;
-    }
+        .btn-delete {
+            background-color: #ffebee;
+            color: #d32f2f;
+            border: none;
+        }
 
-    .btn-delete:hover {
-        background-color: #d32f2f;
-        color: white;
-    }
+        .btn-delete:hover {
+            background-color: #d32f2f;
+            color: white;
+        }
 
-    .form-control:focus,
-    .form-select:focus {
-        border-color: #1976d2;
-        box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.1);
-    }
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #1976d2;
+            box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.1);
+        }
 
-    .table>tbody>tr:hover {
-        background-color: #f8f9fa;
-    }
-</style>
+        .table>tbody>tr:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
 
-<!-- Scripts -->
-<script>
-    $(document).ready(function() {
-        // Initialize DataTable
-        $('#machinesTable').DataTable({
-            order: [
-                [0, 'asc']
-            ],
-            pageLength: 10,
-            responsive: true,
-            dom: '<"d-flex justify-content-between align-items-center mb-3"lf>rt<"d-flex justify-content-between align-items-center"ip>',
-            language: {
-                search: "",
-                searchPlaceholder: "Search machines..."
-            }
-        });
-
-        // Form Submission
-        $('#machineForm').on('submit', function(e) {
-            e.preventDefault();
-
-            const formData = new FormData(this);
-
-            $.ajax({
-                url: '/blc-delivery/createMachine',
-                method: 'POST',
-                data: formData,
-                processData: false, // Tambahkan ini
-                contentType: false, // Tambahkan ini
-                success: function(response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Machine Registered!',
-                        text: response.message,
-                        showConfirmButton: false,
-                        timer: 2000
-                    }).then(() => {
-                        location.reload();
-                    });
-                },
-                error: function(xhr) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: 'Something went wrong! Please try again.'
-                    });
+    <!-- Scripts -->
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            $('#machinesTable').DataTable({
+                order: [
+                    [0, 'asc']
+                ],
+                pageLength: 10,
+                responsive: true,
+                dom: '<"d-flex justify-content-between align-items-center mb-3"lf>rt<"d-flex justify-content-between align-items-center"ip>',
+                language: {
+                    search: "",
+                    searchPlaceholder: "Search machines..."
                 }
             });
 
-        });
+            // Form Submission
+            $('#machineForm').on('submit', function(e) {
+                e.preventDefault();
 
-        // Edit Machine
-        $(document).on('click', '.editMachine', function() {
-            const machineId = $(this).data('id');
-            // Add your edit logic here
-            Swal.fire({
-                icon: 'info',
-                title: 'Edit Machine',
-                text: 'Edit functionality to be implemented'
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: '/blc-delivery/createMachine',
+                    method: 'POST',
+                    data: formData,
+                    processData: false, // Tambahkan ini
+                    contentType: false, // Tambahkan ini
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Machine Registered!',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Something went wrong! Please try again.'
+                        });
+                    }
+                });
+
+            });
+
+            // Edit Machine
+            $(document).on('click', '.editMachine', function() {
+                const machineId = $(this).data('id');
+                // Add your edit logic here
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Edit Machine',
+                    text: 'Edit functionality to be implemented'
+                });
+            });
+
+            // Delete Machine
+            $(document).on('click', '.deleteMachine', function() {
+                const machineId = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Add your delete logic here
+                        $.ajax({
+                            url: `/blc-delivery/deleteMachine/${machineId}`,
+                            method: 'DELETE',
+                            success: function(response) {
+                                if (response.status === 'success') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Deleted!',
+                                        text: response.message,
+                                        showConfirmButton: false,
+                                        timer: 2000
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
             });
         });
 
-        // Delete Machine
-        $(document).on('click', '.deleteMachine', function() {
+        $(document).on('click', '.delete-machine', function() {
             const machineId = $(this).data('id');
 
             Swal.fire({
@@ -284,10 +319,13 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Add your delete logic here
                     $.ajax({
                         url: `/blc-delivery/deleteMachine/${machineId}`,
                         method: 'DELETE',
+                        data: {
+                            machineId: machineId,
+                            _token: '{{ csrf_token() }}',
+                        },
                         success: function(response) {
                             if (response.status === 'success') {
                                 Swal.fire({
@@ -299,63 +337,24 @@
                                 }).then(() => {
                                     location.reload();
                                 });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: response.message
+                                });
                             }
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Something went wrong! Please try again.'
+                            });
                         }
                     });
                 }
             });
         });
-    });
-
-    $(document).on('click', '.delete-machine', function() {
-        const machineId = $(this).data('id');
-
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: `/blc-delivery/deleteMachine/${machineId}`,
-                    method: 'DELETE',
-                    data: {
-                        machineId: machineId,
-                        _token: '{{ csrf_token() }}',
-                    },
-                    success: function(response) {
-                        if (response.status === 'success') {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Deleted!',
-                                text: response.message,
-                                showConfirmButton: false,
-                                timer: 2000
-                            }).then(() => {
-                                location.reload();
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error!',
-                                text: response.message
-                            });
-                        }
-                    },
-                    error: function(xhr) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'Something went wrong! Please try again.'
-                        });
-                    }
-                });
-            }
-        });
-    });
-</script>
+    </script>
 @endsection
