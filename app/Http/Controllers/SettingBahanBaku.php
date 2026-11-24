@@ -75,6 +75,27 @@ class SettingBahanBaku extends Controller
 
     public function setting(Request $request)
     {
+        //validasi struktur dan nilai quantity
+        $request->validate([
+            'items'            => 'required|array|min:1',
+            'items.*.item_id'  => 'required|integer|distinct|exists:raw_items,id',
+            'items.*.quantity' => 'required|integer|min:1',
+        ], [
+            'items.required'            => 'Minimal pilih 1 bahan baku',
+            'items.min'                 => 'Minimal pilih 1 bahan baku',
+            'items.*.quantity.min'      => 'Kuantitas minimal 1 per bahan baku',
+            'items.*.quantity.required' => 'Kuantitas wajib diisi',
+        ]);
+
+        //total barang harus minimal 1
+        $totalQuantity = collect($request->input('items'))->sum('quantity');
+        if ($totalQuantity < 1) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Minimal pembelian bahan baku adalah 1'
+            ]);
+        }
+
         $price = 0;
         for ($i = 0; $i < count($request->input('items')); $i++) {
             $query = RawItem::where('id', $request->input('items')[$i]['item_id'])->first();
@@ -83,7 +104,7 @@ class SettingBahanBaku extends Controller
 
         $query = Player::where('player_username', $request->player_id)->first();
         $room = Room::where('room_id', $request->room_id)->first();
-        if($query->purchased == 0){
+        if ($query->purchased == 0) {
             return response()->json([
                 'status' => 'fail',
                 'message' => 'Player can only purchased once !!!'
@@ -96,10 +117,36 @@ class SettingBahanBaku extends Controller
             ]);
         } else {
 
-            // Update Inventory Raw Items
+            //update Inventory Raw Items
+            //quantity berdasarkan id
+            $purchased = [];
+            foreach ($request->input('items') as $item) {
+                $id = (int) $item['item_id'];
+                $purchased[$id] = ($purchased[$id] ?? 0) + (int) $item['quantity'];
+            }
+
+            //urutan id bahan baku di inventory pemain
+            $rawIdOrder = [];
+            foreach (json_decode($room->item_chosen, true) as $itemId) {
+                $i = Items::where('id', $itemId)->first();
+                if ($i) {
+                    $needed = is_string($i->raw_item_needed)
+                        ? json_decode($i->raw_item_needed, true)
+                        : $i->raw_item_needed;
+
+                    if (is_array($needed)) {
+                        foreach ($needed as $raw) {
+                            $rawIdOrder[] = (int) $raw;
+                        }
+                    }
+                }
+            }
+            $rawIdOrder = array_values(array_unique($rawIdOrder));
+
+            //tambah quantity sesuai id, bukan sesuai urutan request
             $currentRawItems = json_decode($query->raw_items);
-            for ($i = 0; $i < count($currentRawItems); $i++) {
-                $currentRawItems[$i] = $currentRawItems[$i] + $request->input('items')[$i]['quantity'];
+            foreach ($rawIdOrder as $pos => $rawId) {
+                $currentRawItems[$pos] = ($currentRawItems[$pos] ?? 0) + ($purchased[$rawId] ?? 0);
             }
 
             $query->raw_items = json_encode($currentRawItems);
