@@ -92,10 +92,10 @@ class RoomControllerPlayer extends Controller
         }
 
         $playerMachineCapacity = [];
-        $playerMachineQuantity = json_decode(Auth::guard('player')->user()->machine_capacity);
+        $playerMachineQuantity = json_decode($player->machine_capacity, true) ?? [];
 
         for ($i = 0; $i < count($machineCapacity); $i++) {
-            $playerMachineCapacity[] = $machineCapacity[$i] * $playerMachineQuantity[$i];
+            $playerMachineCapacity[] = $machineCapacity[$i] * ($playerMachineQuantity[$i] ?? 0);
         }
 
         $totalCapacity = 0;
@@ -108,7 +108,7 @@ class RoomControllerPlayer extends Controller
         for ($i = 0; $i < count($roomMachineIndex); $i++) {
             $queryMachine = Machine::where('id', $roomMachineIndex[$i])->first();
             $queryItem = Items::where('id', $roomItemIndex[$i])->first();
-            $totalCapacity = $totalCapacity + ($currentMachineCapacity[$i] * $queryMachine->machine_size) + ($currentItemCapacity[$i] * $queryItem->item_length*$queryItem->item_width);
+            $totalCapacity = $totalCapacity + ($currentMachineCapacity[$i] * $queryMachine->machine_size) + ($currentItemCapacity[$i] * $queryItem->item_length * $queryItem->item_width);
         }
 
         return view('Player.fitur.warehouse_machine', [
@@ -256,12 +256,12 @@ class RoomControllerPlayer extends Controller
         }
 
         $playerMachineCapacity = [];
-        $playerCapacity = json_decode(Auth::guard('player')->user()->machine_capacity);
+        $playerCapacity = json_decode($player->machine_capacity, true) ?? [];
         $playerMachineQuantity = $playerCapacity;
 
         // Kapasitas Produksi Player
         for ($i = 0; $i < count($machineCapacity); $i++) {
-            $playerMachineCapacity[] = $machineCapacity[$i] * $playerCapacity[$i];
+            $playerMachineCapacity[] = $machineCapacity[$i] * ($playerCapacity[$i] ?? 0);
         }
 
         $totalCapacity = 0;
@@ -375,11 +375,11 @@ class RoomControllerPlayer extends Controller
         }
 
         $playerMachineCapacity = [];
-        $playerCapacity = json_decode(Auth::guard('player')->user()->machine_capacity);
+        $playerCapacity = json_decode($player->machine_capacity, true) ?? [];
 
         // Kapasitas Produksi Player
         for ($i = 0; $i < count($machineCapacity); $i++) {
-            $playerMachineCapacity[] = $machineCapacity[$i] * $playerCapacity[$i];
+            $playerMachineCapacity[] = $machineCapacity[$i] * ($playerCapacity[$i] ?? 0);
         }
 
         $totalCapacity = 0;
